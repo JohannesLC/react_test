@@ -1,8 +1,23 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Autosuggest from 'react-autosuggest';
-import WeatherTable from './WeatherTable';
+import WeatherTable from '../components/WeatherTable';
 import './Home.css';
+
+const windDescriptions = [
+  { max: 0.2, description: "Stille" },
+  { max: 1.5, description: "Svag vind" },
+  { max: 3.3, description: "Let vind" },
+  { max: 5.4, description: "Let brise" },
+  { max: 7.9, description: "Jævn brise" },
+  { max: 10.7, description: "Frisk brise" },
+  { max: 13.8, description: "Hård vind" },
+  { max: 17.1, description: "Stiv kuling" },
+  { max: 20.7, description: "Stormende kuling" },
+  { max: 24.4, description: "Storm" },
+  { max: 28.4, description: "Stærk storm" },
+  { max: 32.6, description: "Orkan" },
+];
 
 const Home = () => {
   const [city, setCity] = useState('');
@@ -71,7 +86,8 @@ const Home = () => {
           const { time } = item;
           const date = new Date(time).toLocaleDateString();
           const { air_temperature, precipitation_amount, wind_speed } = item.data.instant.details;
-
+          const weatherSymbol = item.data.next_1_hours ? item.data.next_1_hours.summary.symbol_code : 'unknown';
+          
           if (!groupedData[date]) {
             groupedData[date] = {
               date,
@@ -88,13 +104,15 @@ const Home = () => {
             groupedData[date].highLow.low = Math.min(groupedData[date].highLow.low, air_temperature);
           }
 
+          const windDesc = windDescriptions.find(desc => wind_speed <= desc.max)?.description || 'Unknown';
+
           groupedData[date].details.push({
             time: new Date(time).toLocaleTimeString(),
-            weather: item.data.next_1_hours ? item.data.next_1_hours.summary.symbol_code : 'Unknown',
+            weather: weatherSymbol,
             temp: `${air_temperature}°C`,
             precip: `${precipitation_amount ?? '0'} mm`,
             wind: `${wind_speed} m/s`,
-            windDesc: 'Let brise' // Danish for "Light breeze"
+            windDesc
           });
         });
 

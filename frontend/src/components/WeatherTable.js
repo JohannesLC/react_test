@@ -1,8 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import loadWeatherIcon from '../utils/loadWeatherIcon';
 import './WeatherTable.css';
 
 const WeatherTable = ({ title, weatherData }) => {
   const [expandedRow, setExpandedRow] = useState(null);
+  const [icons, setIcons] = useState({});
+
+  useEffect(() => {
+    const loadIcons = async () => {
+      const newIcons = {};
+      for (const day of weatherData) {
+        for (const detail of day.details) {
+          if (!newIcons[detail.weather]) {
+            newIcons[detail.weather] = await loadWeatherIcon(detail.weather);
+          }
+        }
+      }
+      setIcons(newIcons);
+    };
+    loadIcons();
+  }, [weatherData]);
 
   const handleRowClick = (index) => {
     setExpandedRow(expandedRow === index ? null : index);
@@ -54,7 +71,13 @@ const WeatherTable = ({ title, weatherData }) => {
                           {day.details.map((detail, detailIndex) => (
                             <tr key={detailIndex}>
                               <td>{detail.time}</td>
-                              <td>{detail.weather}</td>
+                              <td>
+                                {icons[detail.weather] ? (
+                                  <img src={icons[detail.weather]} alt={detail.weather} />
+                                ) : (
+                                  detail.weather
+                                )}
+                              </td>
                               <td>{detail.temp}</td>
                               <td>{detail.precip}</td>
                               <td>{detail.wind}</td>
