@@ -1,8 +1,8 @@
-// backend/server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
+const axios = require('axios');
 
 const app = express();
 const port = 5000;
@@ -32,16 +32,33 @@ app.post('/api/contact', (req, res) => {
   stmt.finalize();
 });
 
-
 app.get('/api/contacts', (req, res) => {
-    db.all("SELECT * FROM contacts", [], (err, rows) => {
-      if (err) {
-        res.status(500).send("Error retrieving data");
-      } else {
-        res.json(rows);
+  db.all("SELECT * FROM contacts", [], (err, rows) => {
+    if (err) {
+      res.status(500).send("Error retrieving data");
+    } else {
+      res.json(rows);
+    }
+  });
+});
+
+// Endpoint to get weather data
+app.get('/weather', async (req, res) => {
+  const { lat, lon } = req.query;
+  const yrApiUrl = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}`;
+
+  try {
+    const response = await axios.get(yrApiUrl, {
+      headers: {
+        'User-Agent': 'MyTestApp/0.1'
       }
     });
-  });
+
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

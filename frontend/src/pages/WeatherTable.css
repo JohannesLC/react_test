@@ -1,0 +1,39 @@
+.weather-table {
+    width: 45%;
+    margin: 10px;
+  }
+  
+  .weather-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .weather-table th,
+  .weather-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .weather-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .expanded-row td {
+    background-color: #f9f9f9;
+  }
+  
+  .detailed-info {
+    text-align: left;
+  }
+  
+  .detailed-info table {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .detailed-info th,
+  .detailed-info td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
