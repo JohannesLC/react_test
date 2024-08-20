@@ -73,9 +73,9 @@ const WeatherTable = ({ title, weatherData }) => {
                               <td>{detail.time}</td>
                               <td>
                                 {icons[detail.weather] ? (
-                                  <img src={icons[detail.weather]} alt={detail.weather} />
+                                  <img src={icons[detail.weather]} alt={detail.weather} className="weather-icon" />
                                 ) : (
-                                  detail.weather
+                                  <img src={icons['unknown']} alt="unknown" className="weather-icon" />
                                 )}
                               </td>
                               <td>{detail.temp}</td>
