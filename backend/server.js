@@ -129,20 +129,6 @@ app.listen(port, () => {
 });
 
 
-// Route to handle form submission
-app.post('/api/contact', (req, res) => {
-  const { name, email, message } = req.body;
-  const stmt = db.prepare("INSERT INTO contacts VALUES (?, ?, ?)");
-  stmt.run(name, email, message, (err) => {
-    if (err) {
-      res.status(500).send("Error inserting data");
-    } else {
-      res.status(200).send("Data inserted successfully");
-    }
-  });
-  stmt.finalize();
-});
-
 app.get('/api/contacts', (req, res) => {
   db.all("SELECT * FROM contacts", [], (err, rows) => {
     if (err) {

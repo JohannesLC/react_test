@@ -21,7 +21,7 @@ const Home = () => {
                     params: {
                         hovedtype: 'Bebyggelse',
                         undertype: 'by',
-                        per_side: 10000  // Fetching up to 10,000 cities
+                        per_side: 10000  
                     }
                 });
                 const cities = response.data.map(item => item.primærtnavn);
@@ -64,8 +64,6 @@ const Home = () => {
                 fetchYrData(lat, lon),
                 fetchDmiData(lat, lon)
             ]);
-
-            console.log(Array.isArray(yrWeather), Array.isArray(dmiWeather));  // This should print: true, true
 
             setYrData(Array.isArray(yrWeather) ? yrWeather : []);
             setDmiData(Array.isArray(dmiWeather) ? dmiWeather : []);

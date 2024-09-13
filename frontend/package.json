@@ -9,6 +9,8 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.2",
+    "fs": "^0.0.1-security",
+    "grib2json": "^1.0.2",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-autosuggest": "^10.1.0",
@@ -42,5 +44,5 @@
       "last 1 safari version"
     ]
   },
-    "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:5000"
 }

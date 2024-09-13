@@ -2,10 +2,12 @@
 import axios from 'axios';
 import { windDescriptions } from '../utils/windDescriptions';
 
+const apiBaseUrl = 'http://localhost:5000/api';
+
+
 export const fetchYrData = async (lat, lon) => {
     try {
-        const response = await axios.get(`/weather?lat=${lat}&lon=${lon}`);
-        console.log(response, "Yr response")
+        const response = await axios.get(`${apiBaseUrl}/weather?lat=${lat}&lon=${lon}`);
         return processWeatherData(response.data);
     } catch (error) {
         console.error('Error fetching YR data', error);
@@ -24,6 +26,12 @@ const processWeatherData = (data) => {
         if (hour >= 12 && hour < 18) return 'afternoon';
         return 'evening';
     };
+
+    // Check if timeseries is defined before proceeding
+    if (!data?.properties?.timeseries) {
+        console.error('YR data timeseries is undefined');
+        return [];
+    }
 
     data.properties.timeseries.forEach(item => {
         const { time } = item;
@@ -83,3 +91,4 @@ const processWeatherData = (data) => {
         highLow: `Høj: ${item.highLow.high}°C\nLav: ${item.highLow.low}°C`
     }));
 };
+
